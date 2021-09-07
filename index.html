@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
+
+    <title>Examen diagnóstico</title>
+  </head>
+  <body>
+      <div class="container-fluid">
+          <div class="row p-5 pb-1">
+              <div class="col-11">
+                  <h1 class="pb-4">Examen diagnóstico</h1>
+                  <h4 class="lead pb-4">Adair Emanuel Gonzalez Vega</h4>
+              </div>
+              <div class="col-1">
+                  <p class="pt-2">
+                    <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                      +
+                    </button>
+                  </p>
+              </div>
+              <div class="collapse" id="collapseExample">
+                <div class="card card-body">
+                    <h4 class="">Añadir usuario</h4>
+                    <div class="mb-3">
+                    <label for="name" class="form-label">Nombre</label>
+                    <input type="text" class="form-control" id="name">
+                    </div>
+                    <div class="mb-3">
+                    <label for="lastname" class="form-label">Apellido</label>
+                    <input type="text" class="form-control" id="lastname">
+                    </div>
+                    <div class="mb-3">
+                    <label for="imagen" class="form-label">Avatar</label>
+                    <input type="url" class="form-control" id="imagen">
+                    <div id="help" class="form-text">Debe ser una url, ejemplo: https://image.flaticon.com/icons/png/512/147/147144.png</div>
+                    </div>
+                    <button onclick="registrar()" class="btn btn-primary">Añadir</button>
+                </div>
+              </div>
+          </div>
+          <div class="row row-cols-1 row-cols-md-3 g-4 p-5" id="contenedor"></div>
+      </div>
+
+    <script>
+        'use strict'
+
+        fetch('https://reqres.in/api/users')
+        .then(response => response.json())
+        .then(({data}) => {
+            console.log(data);
+            data.forEach(e => {
+                let col = document.createElement("div");
+                col.className = "col-sm pb-4";
+
+                let card = document.createElement("div");
+                card.className = "card";
+                card.style = "width: auto";
+    
+                let img = document.createElement("img");
+                img.src = e.avatar;
+    
+                let bd = document.createElement("div");
+                bd.className = "card-body"
+                let txt = document.createElement("p");
+                txt.innerHTML = `${e.first_name} ${e.last_name}`;
+                let email = document.createElement("p");
+                email.style = "font-size: 70%;"
+                email.innerHTML = `${e.email}`;
+                
+                col.appendChild(card);
+                card.appendChild(img);
+                card.appendChild(bd);
+                bd.appendChild(txt);
+                bd.appendChild(email);
+                document.getElementById("contenedor").appendChild(col);
+            });
+        });
+        
+        const registrar = async ()=>{
+            let name = document.getElementById("name").value;
+            let lastname = document.getElementById("lastname").value;
+            let image = document.getElementById("imagen").value;
+            const data = { name, lastname, image };
+
+            await fetch('https://reqres.in/api/users', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data),
+            })
+            .then((response) => response.json())
+            .then((data) => {
+                let col = document.createElement("div");
+                col.className = "col-sm pb-4";
+
+                let card = document.createElement("div");
+                card.className = "card";
+                card.style = "width: auto";
+    
+                let img = document.createElement("img");
+                img.src = data.image;
+    
+                let bd = document.createElement("div");
+                bd.className = "card-body"
+                let txt = document.createElement("p");
+                txt.innerHTML = `${data.name} ${data.lastname}`;
+                
+                col.appendChild(card);
+                card.appendChild(img);
+                card.appendChild(bd);
+                bd.appendChild(txt);
+                document.getElementById("contenedor").appendChild(col);
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+        }
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj" crossorigin="anonymous"></script>
+  </body>
+</html>
