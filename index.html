@@ -131,16 +131,16 @@
                 let email = document.createElement("p");
                 email.style = "font-size: 70%;"
                 email.innerHTML = `${data.email}`;
-                let btn = document.createElement("button");
-                btn.className = "btn btn-danger"
-                btn.innerHTML = "X"
+                // let btn = document.createElement("button");
+                // btn.className = "btn btn-danger"
+                // btn.innerHTML = "X"
                 
                 col.appendChild(card);
                 card.appendChild(img);
                 card.appendChild(bd);
                 bd.appendChild(txt);
                 bd.appendChild(email);
-                bd.appendChild(btn);
+                // bd.appendChild(btn);
                 document.getElementById("contenedor").appendChild(col);
                 Swal.fire(
                 '¡Añadido!',
